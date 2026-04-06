@@ -360,6 +360,41 @@
       <div class="body-text">
         طب ازاي ن&#65533;ا ازاي نخزن ال Token 😄
       </div>
+
+      <div class="sub-section-title">طب ازاي نخزنه ؟</div>
+
+      <div class="body-text">
+        نستخدم <span class="inline-code">flutter_secure_storage</span> اللي بيستخدم Android Keystore و iOS Keychain:
+      </div>
+
+      <div class="code-block">
+        <span class="comment">// ✅ flutter_secure_storage</span><br>
+        <span class="key">const</span> storage = <span class="val">FlutterSecureStorage</span>(<br>
+        &nbsp;&nbsp;aOptions: <span class="val">AndroidOptions</span>(<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;encryptedSharedPreferences: <span class="str">true</span>,<br>
+        &nbsp;&nbsp;),<br>
+        );<br>
+        <br>
+        <span class="comment">// حفظ — قراءة — حذف</span><br>
+        <span class="key">await</span> storage.<span class="val">write</span>(key: <span class="str">'token'</span>, value: accessToken);<br>
+        <span class="key">await</span> storage.<span class="val">read</span>(key: <span class="str">'token'</span>);<br>
+        <span class="key">await</span> storage.<span class="val">delete</span>(key: <span class="str">'token'</span>);
+      </div>
+
+      <div class="body-text">
+        بتعمل حاجة بسيطة، بدل ما تحفظ التوكن plain text، بتطلب من الـ hardware chip في الجهاز إنه يشفره ويحفظه، والـ chip ده مش أي app أو حد يقدر يوصله غير تطبيقك.
+      </div>
+
+      <div class="note">
+        <div class="note-icon">‼️</div>
+        <div class="note-text">
+          <strong>ملاحظه :</strong> hardware chip دي عملوها عشان كدا أصلا  مهمتها انها تحفظ وتشقر البيانات الحساسه الخاصه بالتطبيق
+        </div>
+      </div>
+
+      <div class="body-text">
+        بس كدا عرفنا ازاي نخزن ال Token 😄
+      </div>
     </div>
 
     <div class="divider"></div>
