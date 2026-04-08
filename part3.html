@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0f;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    padding: 40px 20px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 680px;
+    background: #0d0d14;
+    border: 1px solid #1e1e2e;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .accent-bar {
+    height: 3px;
+    background: linear-gradient(90deg, #ff6b00, #ff4444, #7c3aed, #ff6b00);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite linear;
+  }
+  @keyframes shimmer {
+    0%   { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+  }
+
+  .content { padding: 36px 40px; }
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .avatar {
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(135deg, #ff6b0022, #ff444433);
+    border: 1px solid #ff444455;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .handle { color: #ffffff; font-weight: 600; font-size: 15px; }
+  .role   { color: #555570; font-size: 13px; margin-top: 2px; }
+
+  .part-badge {
+    background: #ff444415;
+    border: 1px solid #ff444444;
+    color: #fca5a5;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #12121c;
+    border: 1px solid #1e1e2e;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+  }
+
+  .author-avatar {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, #7c3aed44, #00d4ff22);
+    border: 1px solid #7c3aed55;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a78bfa;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .author-name  { color: #e0e0f0; font-weight: 600; font-size: 14px; }
+  .author-title { color: #555570; font-size: 12px; margin-top: 2px; }
+
+  .main-title {
+    color: #ffffff;
+    font-size: 21px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .main-subtitle {
+    color: #555570;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 20px;
+  }
+
+  .part-title {
+    color: #fca5a5;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #1e1e2e;
+  }
+
+  .intro {
+    background: #12121c;
+    border: 1px solid #1e1e2e;
+    border-right: 3px solid #ff6b00;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    color: #c8c8e0;
+    font-size: 14.5px;
+    line-height: 1.8;
+  }
+
+  .intro strong { color: #ff6b00; }
+
+  .section { margin-bottom: 24px; }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .section-title .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+  }
+
+  .icon-cyan   { background: #00d4ff15; border: 1px solid #00d4ff33; }
+  .icon-purple { background: #7c3aed15; border: 1px solid #7c3aed33; }
+  .icon-red    { background: #ff444415; border: 1px solid #ff444433; }
+  .icon-green  { background: #22c55e15; border: 1px solid #22c55e33; }
+  .icon-orange { background: #ff6b0015; border: 1px solid #ff6b0033; }
+
+  .body-text {
+    color: #9999bb;
+    font-size: 14px;
+    line-height: 1.9;
+    margin-bottom: 14px;
+  }
+
+  .body-text .inline-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: #12121c;
+    border: 1px solid #1e1e2e;
+    color: #a78bfa;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  .sub-section-title {
+    color: #00d4ff;
+    font-size: 13.5px;
+    font-weight: 700;
+    margin: 18px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Frida attack flow */
+  .frida-flow {
+    background: #080810;
+    border: 1px solid #1e1e2e;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .flow-step:last-child { margin-bottom: 0; }
+
+  .flow-step-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #ff444415;
+    border: 1px solid #ff444444;
+    color: #ff6b6b;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .flow-step-body { flex: 1; }
+  .flow-step-title { color: #fca5a5; font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .flow-step-desc  { color: #666680; font-size: 12.5px; line-height: 1.7; font-family: 'JetBrains Mono', monospace; }
+
+  .flow-connector {
+    width: 1px;
+    height: 12px;
+    background: #ff444430;
+    margin: 0 0 0 12px;
+  }
+
+  /* attack methods grid */
+  .attack-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .attack-card {
+    background: #080810;
+    border: 1px solid #1e1e2e;
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .attack-card-icon { font-size: 18px; margin-bottom: 8px; }
+  .attack-card-title { color: #fca5a5; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .attack-card-desc  { color: #666680; font-size: 12px; line-height: 1.6; }
+
+  /* code block */
+  .code-block {
+    background: #080810;
+    border: 1px solid #1e1e2e;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.9;
+    color: #8888aa;
+    overflow-x: auto;
+  }
+
+  .code-block .file-label {
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    font-size: 11px;
+    color: #444460;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #1a1a28;
+    display: block;
+  }
+
+  .code-block .comment { color: #444460; }
+  .code-block .key     { color: #a78bfa; }
+  .code-block .val     { color: #00d4ff; }
+  .code-block .str     { color: #86efac; }
+  .code-block .cmd     { color: #fbbf24; }
+  .code-block .tag     { color: #f472b6; }
+  .code-block .attr    { color: #7dd3fc; }
+  .code-block .danger  { color: #ff6b6b; }
+  .code-block .ok      { color: #4ade80; }
+
+  /* note */
+  .note {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: #7c3aed10;
+    border: 1px solid #7c3aed30;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+  }
+
+  .note-icon { font-size: 16px; margin-top: 1px; flex-shrink: 0; }
+  .note-text { color: #c4b5fd; font-size: 13.5px; line-height: 1.7; }
+  .note-text strong { color: #a78bfa; }
+
+  /* warning */
+  .warning {
+    background: #fbbf2410;
+    border: 1px solid #fbbf2430;
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .warning-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .warning-text { color: #fde68a; font-size: 13px; line-height: 1.7; }
+  .warning-text strong { color: #fbbf24; }
+
+  /* defense box */
+  .defense-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .defense-num {
+    min-width: 32px;
+    height: 32px;
+    background: #00d4ff10;
+    border: 1px solid #00d4ff30;
+    border-radius: 8px;
+    color: #00d4ff;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .defense-body { flex: 1; }
+  .defense-title { color: #ffffff; font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+
+  /* conclusion */
+  .conclusion-box {
+    background: #12121c;
+    border: 1px solid #1e1e2e;
+    border-right: 3px solid #7c3aed;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    color: #9999bb;
+    font-size: 14px;
+    line-height: 1.9;
+  }
+
+  .conclusion-box .highlight { color: #a78bfa; font-weight: 600; }
+
+  /* divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #1e1e2e, transparent);
+    margin: 24px 0;
+  }
+
+  /* tags */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  .tag {
+    background: #12121c;
+    border: 1px solid #1e1e2e;
+    color: #555570;
+    font-size: 11.5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    transition: all 0.2s;
+  }
+
+  .tag:hover { border-color: #ff6b0044; color: #ff6b00; }
+
+  /* next part */
+  .next-part {
+    background: linear-gradient(135deg, #7c3aed12, #ff444408);
+    border: 1px solid #7c3aed33;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+
+  .next-label { color: #888899; font-size: 12px; margin-bottom: 4px; }
+  .next-title { color: #e0e0f0; font-size: 14px; font-weight: 600; }
+  .next-arrow { color: #7c3aed; font-size: 22px; }
+
+  /* view counter */
+  .view-counter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #12121c;
+    border: 1px solid #1e1e2e;
+    color: #555570;
+    font-size: 11.5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .view-counter .count { color: #ff6b00; font-weight: 600; }
+
+  @media (max-width: 480px) {
+    body { padding: 16px 12px; }
+    .content { padding: 20px 16px; }
+    .main-title { font-size: 17px; }
+    .section-title { font-size: 14px; }
+    .header { gap: 10px; }
+    .part-badge { font-size: 11px; padding: 4px 10px; }
+    .attack-grid { grid-template-columns: 1fr; }
+    .next-part { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .next-arrow { align-self: flex-end; }
+    .code-block { font-size: 11.5px; padding: 12px 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="accent-bar"></div>
+  <div class="content">
+
+    <!-- Back nav -->
+    <a href="part2.html" style="text-decoration:none; display:flex; align-items:center; gap:6px; color:#555570; font-size:12px; margin-bottom:20px; transition: color 0.2s;"
+       onmouseover="this.style.color='#ff6b00'" onmouseout="this.style.color='#555570'">
+      <span style="font-size:16px;">‹</span> Part 2 — MitM &amp; Certificate Pinning
+    </a>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="avatar">💉</div>
+      <div>
+        <div class="handle">Flutter Security</div>
+        <div class="role">Mobile Security Series</div>
+      </div>
+      <div style="margin-right: auto; display: flex; align-items: center; gap: 8px;">
+        <div class="view-counter">👁 <span class="count" id="view-count">...</span></div>
+        <div class="part-badge">Part 3</div>
+      </div>
+    </div>
+
+    <!-- Author -->
+    <div class="author">
+      <div class="author-avatar">م</div>
+      <div>
+        <div class="author-name">Mohamed Elbaz</div>
+        <div class="author-title">Senior Flutter Developer</div>
+      </div>
+    </div>
+
+    <!-- Main Title -->
+    <div class="main-title">ازاي المهاجم بيشغّل كود جوه تطبيقك؟</div>
+    <div class="main-subtitle">(Dynamic Code Execution &amp; Cracked Apps)</div>
+
+    <!-- Part Title -->
+    <div class="part-title">Part 3 — Frida &amp; Runtime Code Injection في Flutter</div>
+
+    <!-- Intro -->
+    <div class="intro">
+      فاكرين <strong>LuckyPatcher</strong> اللي كان أي حد بيعمل root لتليفونه عشان يعمل crack للألعاب زي Dr Driving؟ 😄<br><br>
+      اللي كانت بتعمله LuckyPatcher بضغطة زر، دلوقتي المهاجمين بيعملوه بأدوات <strong>أكثر تطور</strong> على أي تطبيق… حتى Flutter 🧵
+    </div>
+
+    <!-- Section 1: Flutter myth -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon icon-orange">🤔</div>
+        مش Flutter محمي بالـ AOT؟
+      </div>
+
+      <div class="body-text">
+        كتير مننا بيفكر إن Flutter آمن لأن Dart بيتعمل compile بـ AOT — يعني الكود بيتحول لـ native binary مش قابل للتعديل.
+      </div>
+
+      <div class="body-text">
+        ده <span class="inline-code">صح جزئياً</span> بس مش كامل 😅
+      </div>
+
+      <div class="note">
+        <div class="note-icon">💡</div>
+        <div class="note-text">
+          Flutter شالت الـ <strong>dart:mirrors</strong> وعطّلت الـ reflection في الـ release builds،
+          بس المهاجم مش محتاج يعدّل الـ APK خالص — بيحقن كود في التطبيق <strong>وهو شغال</strong> على الجهاز.
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Section 2: Frida -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon icon-red">💉</div>
+        Frida — السلاح الرئيسي
+      </div>
+
+      <div class="body-text">
+        أداة اسمها <span class="inline-code">Frida</span> بتخلي المهاجم يحقن JavaScript جوه التطبيق وهو شغّال على الجهاز في 4 طرق:
+      </div>
+
+      <div class="attack-grid">
+        <div class="attack-card">
+          <div class="attack-card-icon">🪝</div>
+          <div class="attack-card-title">Hook Method Channels</div>
+          <div class="attack-card-desc">يعترض الـ calls بين Flutter والـ native layer ويغير الـ response</div>
+        </div>
+        <div class="attack-card">
+          <div class="attack-card-icon">🧠</div>
+          <div class="attack-card-title">Memory Patching</div>
+          <div class="attack-card-desc">يعدّل قيم في الـ RAM مباشرةً وهو شغّال زي إنه يحوّل false لـ true</div>
+        </div>
+        <div class="attack-card">
+          <div class="attack-card-icon">📦</div>
+          <div class="attack-card-title">Repack &amp; Redistribute</div>
+          <div class="attack-card-desc">يعدّل الـ APK ويوزّعه على stores تانية زي APKPure</div>
+        </div>
+        <div class="attack-card">
+          <div class="attack-card-icon">🔓</div>
+          <div class="attack-card-title">SSL Unpinning</div>
+          <div class="attack-card-desc">يبطّل الـ Certificate Pinning اللي عملناه في الـ Part 2</div>
+        </div>
+      </div>
+
+      <!-- Attack flow -->
+      <div class="body-text" style="margin-top: 6px;">مثلاً هجوم على الـ In-App Purchase بيمشي كده:</div>
+
+      <div class="frida-flow">
+        <div class="flow-step">
+          <div class="flow-step-num">1</div>
+          <div class="flow-step-body">
+            <div class="flow-step-title">Hook الـ Method Channel</div>
+            <div class="flow-step-desc">يعترض نتيجة isPremium() قبل ما توصل للـ Flutter</div>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="flow-step-num">2</div>
+          <div class="flow-step-body">
+            <div class="flow-step-title">يرجّع true دايماً</div>
+            <div class="flow-step-desc">مش بيكسر الـ encryption — بيتجاوزه خالص</div>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="flow-step-num">3</div>
+          <div class="flow-step-body">
+            <div class="flow-step-title">Repack وتوزيع</div>
+            <div class="flow-step-desc">يحفظ النسخة المعدّلة ويوزّعها مجاناً على الإنترنت</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Section 3: Defense -->
+    <div class="section">
+      <div class="section-title">
+        <div class="icon icon-green">🛡️</div>
+        طب ازاي نحمي التطبيق؟
+      </div>
+
+      <!-- Defense 1 -->
+      <div class="defense-item">
+        <div class="defense-num">01</div>
+        <div class="defense-body">
+          <div class="defense-title">أولاً — تحقق دايماً من الـ Backend</div>
+          <div class="body-text" style="margin-bottom: 10px;">
+            أي sensitive operation زي الـ premium check لازم يتأكد منها server-side مش بس client-side:
+          </div>
+          <div class="code-block">
+<span class="key">Future</span>&lt;<span class="val">bool</span>&gt; isPremium() <span class="key">async</span> &#123;<br>
+&nbsp;&nbsp;<span class="comment">// ❌ لا تعتمد على قيمة محلية بس</span><br>
+&nbsp;&nbsp;<span class="comment">// return prefs.getBool('isPremium') ?? false;</span><br>
+<br>
+&nbsp;&nbsp;<span class="comment">// ✅ تحقق من السيرفر دايماً</span><br>
+&nbsp;&nbsp;<span class="key">final</span> response = <span class="key">await</span> api.<span class="val">verifyPremium</span>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;userId: currentUser.id,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;deviceToken: <span class="key">await</span> <span class="val">getDeviceToken</span>(),<br>
+&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;<span class="key">return</span> response.isValid;<br>
+&#125;
+          </div>
+        </div>
+      </div>
+
+      <!-- Defense 2 -->
+      <div class="defense-item">
+        <div class="defense-num">02</div>
+        <div class="defense-body">
+          <div class="defense-title">ثانياً — Anti-Frida Detection</div>
+          <div class="body-text" style="margin-bottom: 10px;">
+            Frida بتفتح port <span class="inline-code">27042</span> على الجهاز، نتحقق منه:
+          </div>
+          <div class="code-block">
+<span class="key">Future</span>&lt;<span class="val">bool</span>&gt; isFridaRunning() <span class="key">async</span> &#123;<br>
+&nbsp;&nbsp;<span class="key">try</span> &#123;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">final</span> socket = <span class="key">await</span> <span class="val">Socket</span>.connect(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">'127.0.0.1'</span>, <span class="val">27042</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout: <span class="key">const</span> <span class="val">Duration</span>(milliseconds: <span class="val">300</span>),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;socket.destroy();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">return</span> <span class="danger">true</span>; <span class="comment">// Frida شغّالة ⚠️</span><br>
+&nbsp;&nbsp;&#125; <span class="key">catch</span> (_) &#123;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">return</span> <span class="ok">false</span>; <span class="comment">// كل حاجة تمام ✅</span><br>
+&nbsp;&nbsp;&#125;<br>
+&#125;
+          </div>
+        </div>
+      </div>
+
+      <!-- Defense 3 -->
+      <div class="defense-item">
+        <div class="defense-num">03</div>
+        <div class="defense-body">
+          <div class="defense-title">ثالثاً — In-App Purchase Server Verification</div>
+          <div class="body-text" style="margin-bottom: 10px;">
+            اللي بيوقف LuckyPatcher تحديداً إنك متعتمدش على الجهاز خالص — بتبعت الـ token للـ backend وهو بيتحقق مع Google أو Apple مباشرة:
+          </div>
+          <div class="code-block">
+<span class="comment">// ❌ لا تعتمد على verify محلي</span><br>
+<span class="comment">// if (purchaseDetails.status == PurchaseStatus.purchased)</span><br>
+<br>
+<span class="comment">// ✅ ابعت الـ receipt للـ backend</span><br>
+<span class="key">final</span> isValid = <span class="key">await</span> api.<span class="val">verifyPurchase</span>(<br>
+&nbsp;&nbsp;token: purchaseDetails<br>
+&nbsp;&nbsp;&nbsp;&nbsp;.verificationData<br>
+&nbsp;&nbsp;&nbsp;&nbsp;.serverVerificationData,<br>
+&nbsp;&nbsp;platform: <span class="val">Platform</span>.isAndroid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;? <span class="str">'google'</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;: <span class="str">'apple'</span>,<br>
+);<br>
+<br>
+<span class="key">if</span> (isValid) <span class="val">unlockFeature</span>();
+          </div>
+          <div class="note">
+            <div class="note-icon">💡</div>
+            <div class="note-text">
+              الـ <strong>serverVerificationData</strong> مش ممكن LuckyPatcher تزوّره لأنه بيتتحقق منه على السيرفر مباشرةً مع Google أو Apple، مش على الجهاز.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Conclusion -->
+    <div class="conclusion-box">
+      الـ detection مش <span class="highlight">مضمونة 100%</span> — المهاجم المتقدم يقدر يخفي Frida، لكن بتزوّد تكلفة الهجوم وبتقلل الـ script kiddies.<br><br>
+      الحماية الحقيقية <span class="highlight">دايماً على الـ backend</span>، أي sensitive operation لازم تتأكد منها server-side مش بس client-side.
+    </div>
+
+    <div class="warning">
+      <div class="warning-icon">‼️</div>
+      <div class="warning-text">
+        <strong>نقطة مهمة:</strong> إضافة الـ detection هي طبقة حماية إضافية مش بديل عن الـ backend verification. الاتنين مع بعض بيعملوا defense in depth حقيقي.
+      </div>
+    </div>
+
+    <!-- Tags -->
+    <div class="tags">
+      <span class="tag">#Flutter</span>
+      <span class="tag">#FlutterDev</span>
+      <span class="tag">#MobileSecurity</span>
+      <span class="tag">#FlutterSecurity</span>
+      <span class="tag">#AndroidDev</span>
+      <span class="tag">#iOSDev</span>
+      <span class="tag">#Dart</span>
+      <span class="tag">#Frida</span>
+      <span class="tag">#ReverseEngineering</span>
+      <span class="tag">#CrackedApps</span>
+      <span class="tag">#CyberSecurity</span>
+    </div>
+
+    <!-- Next Part -->
+    <div class="next-part" style="margin-top: 20px; opacity: 0.6; cursor: default;">
+      <div>
+        <div class="next-label">الجزء الجاي 🔜</div>
+        <div class="next-title">ازاي تكتشف وتحمي التطبيق من الـ Root والـ Jailbreak 🔥</div>
+        <span style="color:#666680; font-size: 12px; font-weight: 400;">(Root &amp; Jailbreak Detection)</span>
+      </div>
+      <div class="next-arrow">›</div>
+    </div>
+
+  </div>
+</div>
+<script>
+  fetch('https://api.countapi.xyz/hit/flutter-security-elbaz/part3')
+    .then(r => r.json())
+    .then(data => {
+      document.getElementById('view-count').textContent = data.value.toLocaleString();
+    })
+    .catch(() => {
+      document.getElementById('view-count').textContent = '—';
+    });
+</script>
+</body>
+</html>
